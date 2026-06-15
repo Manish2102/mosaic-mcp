@@ -10,5 +10,5 @@ logger = logging.getLogger(__name__)
 if __name__ == "__main__":
     logger.info("MCP server created: %s", mcp.name)
     logger.info("Starting MCP server on stdio transport...")
-    mcp.run(transport="stdio")
+    mcp.run(transport="sse")
     logger.info("MCP server stopped.")
