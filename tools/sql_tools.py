@@ -1,8 +1,13 @@
+"""
+This is the module docstring.
+It details the file's purpose, exported classes, and key functions.
+"""
 import os
 import pyodbc
 from tools.mcp_instance import mcp
 
 def get_connection():
+    """Establish a connection to the SQL database using the connection string from environment variables."""
     conn_str = os.getenv("SQL_CONNECTION_STRING")
     if not conn_str:
         raise ValueError("SQL_CONNECTION_STRING environment variable is not set.")
