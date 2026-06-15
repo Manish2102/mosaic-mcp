@@ -2,7 +2,10 @@
   "mcpServers": {
     "mosaic-local": {
       "command": "python",
-      "args": ["C:\\Projects\\MosaicPOC\\main.py"]
+      "args": ["C:\\Projects\\MosaicPOC\\main.py"],
+      "env": {
+        "SQL_CONNECTION_STRING": "your-connection-string-here"
+      }
     },
     "mosaic-remote": {
       "url": "https://mosaic-mcp-poc-f4arc8a8baf5f6ct.centralindia-01.azurewebsites.net/mcp"
