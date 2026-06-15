@@ -23,6 +23,7 @@ mcp = FastMCP("MosaicMCP", auth=auth_provider)
 
 
 @mcp.custom_route("/health", methods=["GET"])
-async def health_check():
+async def health_check(request):
     """Health check endpoint to verify the server is running."""
-    return {"status": "ok"}
+    from starlette.responses import JSONResponse
+    return JSONResponse({"status": "ok"})
