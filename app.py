@@ -1,4 +1,5 @@
 from tools import mcp
 
 # Expose the ASGI app for gunicorn/uvicorn (used by Azure App Service)
-app = mcp.sse_app()
+# Uses streamable HTTP transport (/mcp endpoint) compatible with claude.ai
+app = mcp.streamable_http_app()
