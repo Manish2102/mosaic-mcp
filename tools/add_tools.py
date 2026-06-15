@@ -1,12 +1,4 @@
-from mcp.server.fastmcp import FastMCP
-from mcp.server.transport_security import TransportSecuritySettings
-
-# Disable DNS rebinding protection so Azure's proxy host headers are accepted
-mcp = FastMCP(
-    "MosaicMCP",
-    transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
-)
-
+from tools.mcp_instance import mcp
 
 @mcp.tool()
 def add(a: int, b: int) -> int:
