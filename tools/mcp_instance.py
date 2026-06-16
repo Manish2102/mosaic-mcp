@@ -3,7 +3,9 @@ from dotenv import load_dotenv
 from fastmcp import FastMCP
 from fastmcp.server.auth.providers.azure import AzureProvider
 
+import logging
 load_dotenv()
+logging.basicConfig(level=logging.DEBUG)
 client_id = os.getenv("AZURE_CLIENT_ID")
 client_secret = os.getenv("AZURE_CLIENT_SECRET")
 tenant_id = os.getenv("AZURE_TENANT_ID")
@@ -27,3 +29,4 @@ async def health_check(request):
     """Health check endpoint to verify the server is running."""
     from starlette.responses import JSONResponse
     return JSONResponse({"status": "ok"})
+
