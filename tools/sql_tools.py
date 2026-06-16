@@ -1,22 +1,32 @@
-"""
-This is the module docstring.
-It details the file's purpose, exported classes, and key functions.
-"""
 import os
 import pyodbc
 from tools.mcp_instance import mcp
 
+SQL_SERVER = os.getenv("SQL_SERVER")
+SQL_DATABASE = os.getenv("SQL_DATABASE")
+SQL_CONNECTION_STRING = os.getenv("SQL_CONNECTION_STRING")
+
+
 def get_connection():
-    """Establish a connection to the SQL database using the connection string from environment variables."""
-    conn_str = os.getenv("SQL_CONNECTION_STRING")
-    if not conn_str:
-        raise ValueError("SQL_CONNECTION_STRING environment variable is not set.")
+    """Connect via Managed Identity on Azure, or connection string locally."""
+    if SQL_CONNECTION_STRING:
+        return pyodbc.connect(SQL_CONNECTION_STRING)
+
+    if not SQL_SERVER or not SQL_DATABASE:
+        raise ValueError("Set SQL_SERVER and SQL_DATABASE env vars for Managed Identity, or SQL_CONNECTION_STRING for local.")
+
+    conn_str = (
+        f"Driver={{ODBC Driver 18 for SQL Server}};"
+        f"Server={SQL_SERVER};"
+        f"Database={SQL_DATABASE};"
+        f"Authentication=ActiveDirectoryMsi;"
+    )
     return pyodbc.connect(conn_str)
 
 
 @mcp.tool()
 def query_database(sql: str) -> str:
-    """Execute a SQL query and return the results as a formatted string."""
+    """Execute a SQL query against Azure SQL and return results as a formatted table."""
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -28,7 +38,6 @@ def query_database(sql: str) -> str:
         if not rows:
             return "Query returned no results."
 
-        # Format as a readable table
         result = " | ".join(columns) + "\n"
         result += "-" * len(result) + "\n"
         for row in rows:
