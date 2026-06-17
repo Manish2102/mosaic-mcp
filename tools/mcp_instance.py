@@ -1,9 +1,11 @@
+"""This module sets up a FastMCP instance with Azure authentication and includes a health check endpoint."""
 import os
+import logging
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 from fastmcp.server.auth.providers.azure import AzureProvider
+from starlette.responses import JSONResponse
 
-import logging
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG)
 client_id = os.getenv("AZURE_CLIENT_ID")
@@ -27,6 +29,5 @@ mcp = FastMCP("MosaicMCP", auth=auth_provider)
 @mcp.custom_route("/health", methods=["GET"])
 async def health_check(request):
     """Health check endpoint to verify the server is running."""
-    from starlette.responses import JSONResponse
     return JSONResponse({"status": "ok"})
 
