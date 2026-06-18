@@ -59,8 +59,12 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E6528FA73FE64B3D91A81CE10C0A7267 }}
 
       - name: Deploy container to Azure App Service
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ secrets.DOCKER_APP_SERVICE_NAME }}
-          slot-name: Production
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        run: |
+          az webapp config container set \
+            --name ${{ secrets.DOCKER_APP_SERVICE_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --container-image-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --container-registry-url https://${{ env.REGISTRY }}
+          az webapp restart \
+            --name ${{ secrets.DOCKER_APP_SERVICE_NAME }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
