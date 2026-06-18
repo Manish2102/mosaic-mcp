@@ -64,7 +64,9 @@ jobs:
             --name ${{ secrets.DOCKER_APP_SERVICE_NAME }} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --container-image-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-            --container-registry-url https://${{ env.REGISTRY }}
+            --container-registry-url https://${{ env.REGISTRY }} \
+            --container-registry-user ${{ secrets.ACR_USERNAME }} \
+            --container-registry-password ${{ secrets.ACR_PASSWORD }}
           az webapp restart \
             --name ${{ secrets.DOCKER_APP_SERVICE_NAME }} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
