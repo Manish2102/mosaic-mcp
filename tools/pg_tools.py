@@ -1,11 +1,11 @@
 from tools.mcp_instance import mcp
-from services.sql_service import execute_query
+from services.pg_service import execute_query
 
 
 @mcp.tool()
-def query_database(sql: str) -> str:
+def query_postgres(sql: str) -> str:
     """
-    Execute any SQL against the Azure SQL database and return results.
+    Execute any SQL against the Bregal PostgreSQL database and return results.
     SELECT returns a formatted table. INSERT/UPDATE/DELETE returns rows affected.
 
     Args:
